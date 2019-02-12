@@ -5,7 +5,6 @@ namespace App\helpers;
 use Exception;
 use Illuminate\Support\Facades\Storage;
 
-
 class FileHelper
 {
   /**

@@ -38,7 +38,7 @@ class AuthHelpers
     try {
       return JWT::decode($token, env('JWT_SECRET'), array('HS256'));
     } catch (Exception $e) {
-      abort(401);;
+      return false;
     }
   }
 }

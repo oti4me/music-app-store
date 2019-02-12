@@ -22,7 +22,7 @@ class FilesController extends Controller
 
     if ($fileUrl) {
       $file = File::create([
-        'user_id' => 1,
+        'user_id' => $request->userId,
         'name' => $request->input('name'),
         'url' => $fileUrl,
       ]);
@@ -70,14 +70,20 @@ class FilesController extends Controller
   {
     $this->validate($request, File::$urlRules);
 
-    $response = FileHelper::deleteFile($request->input('url'));
+    $file = File::where('url', $request->input('url'))
+                ->where('user_id', $request->userId)
+                ->first();
 
-    if ($response) {
-      if (File::where('url', $request->input('url'))->delete()) {
+    if ($file && $file->delete()) {
+      if (FileHelper::deleteFile($request->input('url'))) {
         return response()->json([
           'message' => 'File deleted successfully',
         ], 203);
       }
+    } else {
+      return response()->json([
+          'message' => 'File not found for this user',
+        ], 404);
     }
 
     return response()->json([
