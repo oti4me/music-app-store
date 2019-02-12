@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 class FileHelper
 {
   /**
-   * Uploads a file to a remote server
+   * Upload a file to remote server
    * 
    * @param {object} $file
    * @return object
@@ -20,6 +20,22 @@ class FileHelper
       return Storage::put('files', $file);
 
     } catch(\Exception $e) {
+      dd($e->getMessage());
+    }
+  }
+
+  /**
+   * Download a file from remote server
+   * 
+   * @param {object} $file
+   * @return object
+   */
+  public static function downloadFile($url)
+  {
+    try {
+      return Storage::download($url);
+
+    } catch (\Exception $e) {
       dd($e->getMessage());
     }
   }
