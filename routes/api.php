@@ -24,7 +24,12 @@ Route::group(['prefix' => 'v1'], function () {
     });
     Route::group(['prefix' => 'files'], function () {
         Route::post('/', 'FilesController@uploadFile');
-        Route::get('/download', 'FilesController@downloadFile');
+        Route::get('/', 'FilesController@downloadFile');
         Route::post('/download', 'FilesController@downloadFile');
+        Route::delete('/', 'FilesController@deleteFile');
     });
+});
+
+Route::fallback(function () {
+    return response()->json(['message' => 'Not Found.'], 404);
 });

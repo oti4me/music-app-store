@@ -40,14 +40,14 @@ class FilesController extends Controller
   }
 
   /**
-   * Uplaod file the a remote server
+   * Downlaod a file from the remote server
    * 
    * @param Request $request
    * @return  $file
    */
   public function downloadFile(Request $request)
   {
-    $this->validate($request, File::$downloadRules);
+    $this->validate($request, File::$urlRules);
 
     $response = FileHelper::downloadFile($request->input('url'));
 
@@ -57,6 +57,31 @@ class FilesController extends Controller
 
     return response()->json([
       'message' => 'Error downloading file, try again later',
+    ], 500);
+  }
+
+  /**
+   * delete file from the remote server
+   * 
+   * @param Request $request
+   * @return  $file
+   */
+  public function deleteFile(Request $request)
+  {
+    $this->validate($request, File::$urlRules);
+
+    $response = FileHelper::deleteFile($request->input('url'));
+
+    if ($response) {
+      if (File::where('url', $request->input('url'))->delete()) {
+        return response()->json([
+          'message' => 'File deleted successfully',
+        ], 203);
+      }
+    }
+
+    return response()->json([
+      'message' => 'Error deleting file, try again later',
     ], 500);
   }
 }

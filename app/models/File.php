@@ -30,7 +30,7 @@ class File extends Model
      *
      * @var array
      */
-    public static $downloadRules = [
+    public static $urlRules = [
         'url' => 'required',
     ];
 }

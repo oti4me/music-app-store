@@ -39,4 +39,20 @@ class FileHelper
       dd($e->getMessage());
     }
   }
+
+  /**
+   * Delete a file from remote server
+   * 
+   * @param {object} $file
+   * @return object
+   */
+  public static function deleteFile($url)
+  {
+    try {
+      return Storage::delete($url);
+
+    } catch (\Exception $e) {
+      dd($e->getMessage());
+    }
+  }
 }
