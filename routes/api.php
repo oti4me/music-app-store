@@ -24,5 +24,7 @@ Route::group(['prefix' => 'v1'], function () {
     });
     Route::group(['prefix' => 'files'], function () {
         Route::post('/', 'FilesController@uploadFile');
+        Route::get('/download', 'FilesController@downloadFile');
+        Route::post('/download', 'FilesController@downloadFile');
     });
 });
