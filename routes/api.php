@@ -20,5 +20,6 @@ Route::get('/', function (Request $request) {
 Route::group(['prefix' => 'v1'], function () {
     Route::group(['prefix' => 'auth'], function () {
         Route::post('/signup', 'UsersController@userSignup');
+        Route::post('/signin', 'UsersController@userSignin');
     });
 });
