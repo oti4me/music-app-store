@@ -22,4 +22,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('/signup', 'UsersController@userSignup');
         Route::post('/signin', 'UsersController@userSignin');
     });
+    Route::group(['prefix' => 'files'], function () {
+        Route::post('/', 'FilesController@uploadFile');
+    });
 });
