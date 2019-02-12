@@ -1,0 +1,72 @@
+version: 2
+jobs:
+  build:
+    environment:
+      CC_TEST_REPORTER_ID: ea9530feaaafc4b5d0c9f84eccb3609a2ebae84b52dad6f0c194c0b5f8b60fcf
+    docker:
+      - image: circleci/php:7.1-browsers
+        environment:
+          IMG_TAG: $(echo $CIRCLE_SHA1 | cut -c -7)
+          DB_CONNECTION: pgsql
+          DB_HOST: 127.0.0.1
+          CACHE_DRIVER: file
+          JWT_SECRET: QAXtdcJNke12ObvtHN
+          APP_KEY: base64:vSPnIS7mqyGVPmFPbcG9ZZQDgUUl0r3qdvaS/P4HPVg=
+          APP_ENV: testing
+          DB_DATABASE: circle_test
+          DB_USERNAME: ubuntu
+          DB_PASSWORD: ""
+
+      - image: circleci/postgres:9.6
+        environment:
+          POSTGRES_USER: ubuntu
+          POSTGRES_DB: circle_test
+          POSTGRES_PASSWORD: ""
+
+    working_directory: ~/repo
+
+    steps:
+      - run:
+          name: Install PHP extensions
+          command: |
+            sudo apt-get install -y libpq-dev
+            sudo docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
+            sudo docker-php-ext-install pdo pdo_pgsql pgsql
+
+      - run:
+          name: Install Composer
+          command: curl -sS https://getcomposer.org/installer | sudo php  -- --install-dir=/usr/local/bin --filename=composer
+
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "composer.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - v1-dependencies-
+
+      - run:
+          name: Setup Code Climate test-reporter
+          command: |
+            # download test reporter as a static binary
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+
+      - run: composer install -n --prefer-dist
+
+      - save_cache:
+          paths:
+            - ./vendor
+          key: v1-dependencies-{{ checksum "composer.json" }}
+
+      - run:
+          name: Migrate Laravel Database
+          command: php artisan migrate:refresh --env=testing --force
+
+      - run:
+          name: Run tests
+          command: |
+            ./cc-test-reporter before-build
+            ./vendor/bin/phpunit --coverage-clover clover.xml
+            ./cc-test-reporter after-build --coverage-input-type clover --exit-code $?
