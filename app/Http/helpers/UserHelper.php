@@ -24,6 +24,20 @@ class UserHelper
     ];
   }
 
+  public static function validateSignin($input){
+    
+    $errors = [];
+    if (!self::validateEmail(self::test_input(@$input['email']))) {
+      $errors[] = "A valid emmail is required!!";
+    }
+
+    if (!self::validatePaaword(self::test_input(@$input['password']))) {
+      $errors[] = "Password is required, and must be more than 3 characters";
+    }
+
+    return $errors;
+  }
+
   /**
    * Validate user input.
    * 
@@ -45,8 +59,8 @@ class UserHelper
         $errors[] = "First Name is required and must me more than 2 characters";
       }
 
-      if (!self::validateName(self::test_input(@$input['password']))) {
-        $errors[] = "First Password is required, and must be more than 3 characters";
+      if (!self::validatePaaword(self::test_input(@$input['password']))) {
+        $errors[] = "Password is required, and must be more than 3 characters";
       }
 
       return $errors;
@@ -62,14 +76,14 @@ class UserHelper
 
   private static function validatePaaword($password)
   {
-    if ($password && $name < 4) {
+    if ($password && strlen($password) > 3) {
       return true;
     } else return false;
   }
 
   private static function validateName($name)
   {
-    if ($name && $name < 3) {
+    if ($name && strlen($name) > 3) {
       return true;
     } else return false;
   }
