@@ -28,6 +28,7 @@ class FilesController extends Controller
       if($file) {
         return response()->json([
           'message' => 'File uploaded',
+          'file' => $file
         ], 201);
       }
     }
