@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
+use Tests\Mock\FileMock;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,11 +16,15 @@ use Faker\Generator as Faker;
 |
 */
 
-$factory->define(App\Models\User::class, function (Faker $faker) {
+$factory->define(App\Models\File::class, function (Faker $faker) {
+    $fileMock = new FileMock();
+    $file = $fileMock->fileDetails();
+
+    $usersId = User::all()->pluck('id')->toArray();
+
     return [
-        'firstName' => $faker->firstName,
-        'lastName' => $faker->lastName,
-        'email' => $faker->unique()->safeEmail,
-        'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
+        'name'      => $file['name'],
+        'url'       => $file['file'],
+        'user_id'   => array_rand($usersId),
     ];
 });

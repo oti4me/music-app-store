@@ -69,6 +69,7 @@ class UsersController extends Controller
         $token = AuthHelpers::jwtEncode($user);
   
         return response()->json([
+          'message' => 'Login successful',
           'token' => $token,
         ], 200);
       }

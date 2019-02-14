@@ -4,6 +4,7 @@ namespace App\helpers;
 
 use Exception;
 use Illuminate\Support\Facades\Storage;
+use App\Models\File;
 
 class FileHelper
 {
@@ -19,8 +20,12 @@ class FileHelper
       return Storage::put('files', $file);
 
     } catch(\Exception $e) {
-      dd($e->getMessage());
+      return false;
     }
+  }
+
+  public static function getFile() {
+    return File::all()[0];
   }
 
   /**
@@ -35,7 +40,7 @@ class FileHelper
       return Storage::download($url);
 
     } catch (\Exception $e) {
-      dd($e->getMessage());
+      return false;
     }
   }
 
@@ -51,7 +56,7 @@ class FileHelper
       return Storage::delete($url);
 
     } catch (\Exception $e) {
-      dd($e->getMessage());
+      return false;
     }
   }
 }
