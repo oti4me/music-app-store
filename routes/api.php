@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Http\Request;
-use GuzzleHttp\Middleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +22,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('/signup', 'UsersController@userSignup');
         Route::post('/signin', 'UsersController@userSignin');
     });
-    Route::group(['prefix' => 'files', 'middleware' => 'token'], function () {
+    Route::group(['prefix' => 'files'], function () {
         Route::post('/', 'FilesController@uploadFile');
         Route::get('/', 'FilesController@downloadFile');
         Route::post('/download', 'FilesController@downloadFile');
