@@ -24,6 +24,15 @@ class UserHelper
     ];
   }
 
+  /**
+   * Get user by user id
+   * 
+   * @param $id
+   */
+  public static function getUserById($id) {
+    return User::find($id);
+  }
+
   public static function validateSignin($input){
     
     $errors = [];
