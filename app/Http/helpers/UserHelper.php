@@ -4,7 +4,6 @@ namespace App\helpers;
 
 use Exception;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
 
 class UserHelper
 {
@@ -25,15 +24,11 @@ class UserHelper
     ];
   }
 
-  public static function getUserById($id) {
-    return User::find($id);
-  }
-
   public static function validateSignin($input){
     
     $errors = [];
     if (!self::validateEmail(self::test_input(@$input['email']))) {
-      $errors[] = "A valid email is required!!";
+      $errors[] = "A valid emmail is required!!";
     }
 
     if (!self::validatePaaword(self::test_input(@$input['password']))) {
@@ -53,7 +48,7 @@ class UserHelper
   {
     $errors = [];
       if(!self::validateEmail(self::test_input(@$input['email']))) {
-        $errors[] = "A valid email is required!!";
+        $errors[] = "A valid emmail is required!!";
       }
 
       if (!self::validateName(self::test_input(@$input['firstName']))) {
