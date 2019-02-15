@@ -18,11 +18,9 @@ class FilesController extends Controller
   {
     $this->validate($request, File::$uploadRules);
 
-    $fileUrl = FileHelper::uploadFile($request->file('file'));
-
-    if ($fileUrl) {
+    if ($fileUrl = FileHelper::uploadFile($request->file('file'))) {
       $file = File::create([
-        'user_id' => 1,
+        'user_id' => $request->userId,
         'name' => $request->input('name'),
         'url' => $fileUrl,
       ]);
@@ -34,10 +32,6 @@ class FilesController extends Controller
         ], 201);
       }
     }
-
-    return response()->json([
-      'message' => 'Error uploading file, try again later',
-    ], 500);
   }
 
   /**
@@ -50,15 +44,13 @@ class FilesController extends Controller
   {
     $this->validate($request, File::$urlRules);
 
-    $response = FileHelper::downloadFile($request->input('url'));
-
-    if ($response) {
+    if ($response = FileHelper::downloadFile($request->input('url'))) {
         return $response;
     }
 
     return response()->json([
-      'message' => 'Error downloading file, try again later',
-    ], 500);
+      'message' => 'This file is not found',
+    ], 404);
   }
 
   /**
@@ -71,18 +63,20 @@ class FilesController extends Controller
   {
     $this->validate($request, File::$urlRules);
 
-    $response = FileHelper::deleteFile($request->input('url'));
+    $file = File::where('url', $request->input('url'))
+                ->where('user_id', $request->userId)
+                ->first();
 
-    if ($response) {
-      if (File::where('url', $request->input('url'))->delete()) {
+    if ($file && $file->delete()) {
+      if (FileHelper::deleteFile($request->input('url'))) {
         return response()->json([
           'message' => 'File deleted successfully',
-        ], 203);
+        ], 204);
       }
-    }
+    } 
 
     return response()->json([
-      'message' => 'Error deleting file, try again later',
-    ], 500);
-  }
+        'message' => 'File not found for this user',
+      ], 404);
+    }
 }
