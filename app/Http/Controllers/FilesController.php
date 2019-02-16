@@ -44,8 +44,11 @@ class FilesController extends Controller
   {
     $this->validate($request, File::$urlRules);
 
-    if ($response = FileHelper::downloadFile($request->input('url'))) {
-        return $response;
+    if ($response = FileHelper::downloadFile($request->input('url'))) {      
+      return response()->json([
+        'message' => 'File Downloaded',
+        'File' => $response,
+      ], 200);
     }
 
     return response()->json([
