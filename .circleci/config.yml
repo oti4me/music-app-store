@@ -30,10 +30,8 @@ jobs:
           name: Install PHP extensions
           command: |
             sudo apt-get install -y libpq-dev
-            sudo apt-get install -y libpng-dev
-            sudo docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql
             sudo docker-php-ext-install pdo pdo_pgsql pgsql
-            sudo docker-php-ext-install gd
+            sudo apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libpng-dev && sudo docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && sudo -E docker-php-ext-install -j$(nproc) gd
 
       - run:
           name: Install Composer

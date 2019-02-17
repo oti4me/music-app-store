@@ -44,7 +44,8 @@ class FilesController extends Controller
   {
     $this->validate($request, File::$urlRules);
 
-    if ($response = FileHelper::downloadFile($request->input('url'))) {      
+    if ($response = FileHelper::downloadFile($request->input('url'))) { 
+            
       return response()->json([
         'message' => 'File Downloaded',
         'File' => $response,
@@ -82,4 +83,36 @@ class FilesController extends Controller
         'message' => 'File not found for this user',
       ], 404);
     }
+
+  /**
+   * get uploaded file list
+   * 
+   * @param Request $request
+   * @return  $file
+   */
+  public function getFiles(Request $request) {
+
+    $files = File::all();
+
+    return response()->json([
+      'message' => 'in coming files list',
+      'files' => $files,
+    ], 200);
+  }
+
+  /**
+   * get my uploaded file list
+   * 
+   * @param Request $request
+   * @return  $file
+   */
+  public function getMyFiles(Request $request)
+  {
+    $files = File::where('user_id', $request->userId)->get();
+
+    return response()->json([
+      'message' => 'in coming files list',
+      'files' => $files,
+    ], 200);
+  }
 }
