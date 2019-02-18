@@ -32,7 +32,7 @@ class User extends Authenticatable
     'firstName' => 'required|min:5|max:25',
     'lastName' => 'required|min:5|max:25',
     'email' => 'required|email',
-    'password' => 'required|min:4|max:15',
+    'password' => 'required|min:4|max:25',
     'genre' => 'required'
   ];
 

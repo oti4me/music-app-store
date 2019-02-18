@@ -25,6 +25,8 @@ class UserMock
       "email"       => 'oti4me@gmail.com',
       "password"    => 'securepassworddoesnthurt',
       "phone"       => '911',
+      "genre"       => 'Rap',
+      "type"        => 'user',
     ];
   }
 
@@ -37,27 +39,29 @@ class UserMock
   {
     return [
       "firstName" => $this->faker->firstName,
-      "lastName" => $this->faker->lastName,
-      "email" => $this->faker->email,
-      "password" => $this->faker->password,
-      "phone" => $this->faker->phoneNumber,
+      "lastName"  => $this->faker->lastName,
+      "email"     => $this->faker->email,
+      "password"  => $this->faker->password,
+      "phone"     => $this->faker->phoneNumber,
+      "genre"     => 'Soul',
+      "type"      => 'user',
     ];
   }
 
   public function getincompleteUserDetails() {
     return [
-      "firstName" => '',
-      "lastName" => $this->faker->lastName,
-      "email" => 'oti4me@gmail',
-      "password" => $this->faker->password,
-      "phone" => $this->faker->phoneNumber,
+      "firstName"   => '',
+      "lastName"    => $this->faker->lastName,
+      "email"       => 'oti4me@gmail',
+      "password"    => $this->faker->password,
+      "phone"       => $this->faker->phoneNumber,
     ];
   }
 
   public function getwrongEmailUserDetails() {
     return [
-      "email" => 'incorrectemail@gmail.com',
-      "password" => $this->faker->password,
+      "email"     => 'incorrectemail@gmail.com',
+      "password"  => $this->faker->password,
     ];
   }
 }
