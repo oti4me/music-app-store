@@ -83,6 +83,49 @@ class FilessControllerTest extends TestCase
   }
 
   /**
+   * Test Fetch Files.
+   *
+   * @return void
+   */
+  public function testFetchFiles()
+  {
+    $response = $this->get('/api/v1/files', $this->header);
+
+    $response->assertStatus(200);
+
+    $response->assertJsonFragment([
+      'message' => 'in coming files list',
+    ]);
+  }
+
+  /**
+   * Test Fetch My Files.
+   *
+   * @return void
+   */
+  public function testFetchMyFiles()
+  {
+    $file = FileHelper::getFile();
+
+    $user = UserHelper::getUserById($file->user_id);
+
+    $token = AuthHelpers::jwtEncode($user);
+
+    $header = [
+      'Authorization' => $token
+    ];
+
+    $response = $this->get('/api/v1/files/myfiles', $header);
+
+    $response->assertStatus(200);
+
+    $response->assertJsonFragment([
+      'message' => 'in coming files list',
+    ]);
+  }
+
+
+  /**
    * Test Delete File Seccess.
    *
    * @return void
@@ -90,8 +133,8 @@ class FilessControllerTest extends TestCase
   public function testDownloadFileSuccess()
   {
     $files = FileMock::getFilesFromDB()[0];
-
-    $response = $this->get('/api/v1/files?url='. $files->url, $this->header);
+    
+    $response = $this->get('/api/v1/files/download?url='. $files->url, $this->header);
 
     $response->assertStatus(200);
   }
@@ -105,7 +148,7 @@ class FilessControllerTest extends TestCase
   {
     $files = "pathtononeexistingfile";
 
-    $response = $this->get('/api/v1/files?url=' . $files, $this->header);
+    $response = $this->get('/api/v1/files/download?url=' . $files, $this->header);
 
     $response->assertStatus(404);
 

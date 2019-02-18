@@ -33,7 +33,7 @@ class FileMock
   {
     Storage::fake('avatars');
 
-    $file = UploadedFile::fake()->image('nickleback.mp3');
+    $file = UploadedFile::fake()->image('avatar.jpg');
 
     return [
       "name" => $this->faker->name,

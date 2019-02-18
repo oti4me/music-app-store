@@ -25,8 +25,9 @@ Route::group(['prefix' => 'v1'], function () {
     });
     Route::group(['prefix' => 'files', 'middleware' => 'token'], function () {
         Route::post('/', 'FilesController@uploadFile');
-        Route::get('/', 'FilesController@downloadFile');
-        Route::post('/download', 'FilesController@downloadFile');
+        Route::get('/', 'FilesController@getFiles');
+        Route::get('/myfiles', 'FilesController@getMyFiles');
+        Route::get('/download', 'FilesController@downloadFile');
         Route::delete('/', 'FilesController@deleteFile');
     });
 });
