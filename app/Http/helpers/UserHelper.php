@@ -21,82 +21,36 @@ class UserHelper
       'lastName'  => $userInput['lastName'],
       'email'     => $userInput['email'],
       'password'  => Hash::make($userInput['password']),
-      'phone'     => $userInput['phone']
+      'phone'     => @$userInput['phone'],
+      'genre'     => ucfirst($userInput['genre']),
     ];
   }
 
-  public static function getUserById($id) {
-    return User::find($id);
-  }
-
-  public static function validateSignin($input){
-    
-    $errors = [];
-    if (!self::validateEmail(self::test_input(@$input['email']))) {
-      $errors[] = "A valid email is required!!";
-    }
-
-    if (!self::validatePaaword(self::test_input(@$input['password']))) {
-      $errors[] = "Password is required, and must be more than 3 characters";
-    }
-
-    return $errors;
+  /**
+   * Logined in user details.
+   * 
+   * @param {object} $user
+   * @return {Array} user
+   */
+  public static function getSignedInUserDetails($user)
+  {
+    return [
+      'firstName' => $user->firstName,
+      'lastName' => $user->lastName,
+      'email' => $user->email,
+      'phone' => @$user->phone,
+      'genre' => $user->genre,
+      'type' => $user->type
+    ];
   }
 
   /**
-   * Validate user input.
+   * Get a user by ID
    * 
-   * @param {array} $input
-   * @return array
+   * @param {Interger} $id
+   * @return {Object} User
    */
-  public static function validateSignup($input)
-  {
-    $errors = [];
-      if(!self::validateEmail(self::test_input(@$input['email']))) {
-        $errors[] = "A valid email is required!!";
-      }
-
-      if (!self::validateName(self::test_input(@$input['firstName']))) {
-        $errors[] = "First Name is required and must me more than 2 characters";
-      }
-
-      if (!self::validateName(self::test_input(@$input['lastName']))) {
-        $errors[] = "First Name is required and must me more than 2 characters";
-      }
-
-      if (!self::validatePaaword(self::test_input(@$input['password']))) {
-        $errors[] = "Password is required, and must be more than 3 characters";
-      }
-
-      return $errors;
-  }
-
-  private static function test_input($data)
-  {
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
-  }
-
-  private static function validatePaaword($password)
-  {
-    if ($password && strlen($password) > 3) {
-      return true;
-    } else return false;
-  }
-
-  private static function validateName($name)
-  {
-    if ($name && strlen($name) > 3) {
-      return true;
-    } else return false;
-  }
-
-  private static function validateEmail($email)
-  {
-    if(filter_var($email, FILTER_VALIDATE_EMAIL)) {
-      return true;
-    } else return false;
+  public static function getUserById($id) {
+    return User::find($id);
   }
 }
