@@ -4,30 +4,30 @@ namespace Tests\Feature\App\Http\Controller;
 
 use Tests\TestCase;
 // use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\Mock\FileMock;
+use Tests\Mock\SongMock;
 use Illuminate\Support\Facades\Artisan;
 use App\Helpers\AuthHelpers;
 use App\Helpers\UserHelper;
-use App\Helpers\FileHelper;
+use App\Helpers\SongsHelper;
 
-class FilessControllerTest extends TestCase
+class SongsControllerTest extends TestCase
 {
 
   protected function setUp()
   {
     parent::setUp();
 
-    $fileMock = new FileMock();
+    $songMock = new SongMock();
 
-    $this->header = $fileMock->mockUserToken();
+    $this->header = $songMock->mockUserToken();
 
-    $this->fileDetails = $fileMock->fileDetails();
+    $this->songDetails = $songMock->songDetails();
 
-    $this->deleteFileDetails = $fileMock->deleteFileDetails();
+    $this->deleteSongDetails = $songMock->deleteSongDetails();
 
-    $this->invalidFileDetails = $fileMock->invalidFileDetails();
+    $this->invalidSongDetails = $songMock->invalidSongDetails();
 
-    $this->deleteFileNotFoundDetails = $fileMock->deleteFileNotFoundDetails();
+    $this->deleteSongNotFoundDetails = $songMock->deleteSongNotFoundDetails();
   }
 
   /**
@@ -35,9 +35,9 @@ class FilessControllerTest extends TestCase
    *
    * @return void
    */
-  public function testFileUploadSuccess()
+  public function testSongUploadSuccess()
   {
-    $response = $this->post('/api/v1/files', $this->fileDetails, $this->header);
+    $response = $this->post('/api/v1/songs', $this->songDetails, $this->header);
 
     $response->assertStatus(201);
 
@@ -51,9 +51,9 @@ class FilessControllerTest extends TestCase
    *
    * @return void
    */
-  public function testFileUploadValidationError()
+  public function testSongUploadValidationError()
   {
-    $response = $this->post('/api/v1/files', $this->invalidFileDetails, $this->header);
+    $response = $this->post('/api/v1/songs', $this->invalidSongDetails, $this->header);
 
     $response->assertStatus(422);
 
@@ -67,13 +67,13 @@ class FilessControllerTest extends TestCase
    *
    * @return void
    */
-  public function testFileUploadAuthenticationError()
+  public function testSongUploadAuthenticationError()
   {
     $header = [
       'Authorization' => 'thisisafaketoken'
     ];
 
-    $response = $this->post('/api/v1/files', $this->invalidFileDetails, $header);
+    $response = $this->post('/api/v1/songs', $this->invalidSongDetails, $header);
 
     $response->assertStatus(401);
 
@@ -87,9 +87,9 @@ class FilessControllerTest extends TestCase
    *
    * @return void
    */
-  public function testFetchFiles()
+  public function testFetchSong()
   {
-    $response = $this->get('/api/v1/files', $this->header);
+    $response = $this->get('/api/v1/songs', $this->header);
 
     $response->assertStatus(200);
 
@@ -103,11 +103,11 @@ class FilessControllerTest extends TestCase
    *
    * @return void
    */
-  public function testFetchMyFiles()
+  public function testFetchMySongs()
   {
-    $file = FileHelper::getFile();
+    $song = SongsHelper::getSong();
 
-    $user = UserHelper::getUserById($file->user_id);
+    $user = UserHelper::getUserById($song->user_id);
 
     $token = AuthHelpers::jwtEncode($user);
 
@@ -115,7 +115,7 @@ class FilessControllerTest extends TestCase
       'Authorization' => $token
     ];
 
-    $response = $this->get('/api/v1/files/myfiles', $header);
+    $response = $this->get('/api/v1/songs/me', $header);
 
     $response->assertStatus(200);
 
@@ -130,11 +130,11 @@ class FilessControllerTest extends TestCase
    *
    * @return void
    */
-  public function testDownloadFileSuccess()
+  public function testDownloadSongSuccess()
   {
-    $files = FileMock::getFilesFromDB()[0];
+    $song = SongMock::getSongsFromDB()[0];
     
-    $response = $this->get('/api/v1/files/download?url='. $files->url, $this->header);
+    $response = $this->get('/api/v1/songs/download?url='. $song->url, $this->header);
 
     $response->assertStatus(200);
   }
@@ -144,11 +144,11 @@ class FilessControllerTest extends TestCase
    *
    * @return void
    */
-  public function testDownloadFileFailure()
+  public function testDownloadSongFailure()
   {
-    $files = "pathtononeexistingfile";
+    $song = "pathtononeexistingfile";
 
-    $response = $this->get('/api/v1/files/download?url=' . $files, $this->header);
+    $response = $this->get('/api/v1/songs/download?url=' . $song, $this->header);
 
     $response->assertStatus(404);
 
@@ -162,26 +162,21 @@ class FilessControllerTest extends TestCase
    *
    * @return void
    */
-  public function testDeleteFileSuccess()
+  public function testDeleteSongSuccess()
   {
-    $file = FileHelper::getFile();
+    $song = SongsHelper::getSong();
     
-    $user = UserHelper::getUserById($file->user_id);
+    $user = UserHelper::getUserById($song->user_id);
 
     $token = AuthHelpers::jwtEncode($user);
 
     $header = [
       'Authorization' => $token
     ];
-    
-    $request = [
-      'url' => $file->url
-    ];
-    
-    $response = $this->delete('/api/v1/files', $request, $header);
 
-    $response->assertStatus(204);
+    $response = $this->delete('/api/v1/songs/' . $song->id, [], $header);
 
+    $response->assertStatus(200);
   }
 
   /**
@@ -189,9 +184,9 @@ class FilessControllerTest extends TestCase
    *
    * @return void
    */
-  public function testDeleteFileNotFound()
+  public function testDeleteSongNotFound()
   {
-    $response = $this->delete('/api/v1/files', $this->deleteFileNotFoundDetails, $this->header);
+    $response = $this->delete('/api/v1/songs/' . '200', [], $this->header);
 
     $response->assertStatus(404);
 
@@ -205,14 +200,14 @@ class FilessControllerTest extends TestCase
    *
    * @return void
    */
-  public function testDeleteFileValidationError()
+  public function testDeleteSongValidationError()
   {
-    $response = $this->delete('/api/v1/files', $this->fileDetails, $this->header);
+    $response = $this->delete('/api/v1/songs/' . 'edfg', [], $this->header);
 
-    $response->assertStatus(422);
+    $response->assertStatus(400);
 
     $response->assertJsonFragment([
-      'url' => ['The url field is required.'],
+      'message' => 'Invalid ID',
     ]);
   }
 }
