@@ -17,16 +17,13 @@ class UsersController extends Controller
    */
   public function userSignup(Request $request)
   {
-
-    $errors = UserHelper::validateSignup($request->input());
-
-    if(count($errors) > 0) {
-      return response()->json([
-        'message' => $errors,
-      ], 400);
-    }
+    $this->validate($request, User::$signupRules);
 
     $userDetails = UserHelper::getFormatedUserDetails($request->input());
+
+    if($request->input('type')) {
+      $userDetails['type'] = $request->input('type');
+    }
 
     $existingUser = User::where('email', $userDetails['email'])->first();
 
@@ -35,14 +32,17 @@ class UsersController extends Controller
         'message' => 'A user with this email already exist',
       ], 409);
     }
-
+    
     $user = User::create($userDetails);
 
     $token = AuthHelpers::jwtEncode($user);
 
+    $user = UserHelper::getSignedInUserDetails($user);
+
     return response()->json([
       'message' => 'User account create successfully',
       'token' => $token,
+      'user' => $user,
     ], 201);
   }
 
@@ -53,23 +53,22 @@ class UsersController extends Controller
    */
   public function userSignin(Request $request)
   {
-
-    $errors = UserHelper::validateSignin($request->input());
-
-    if (count($errors) > 0) {
-      return response()->json([
-        'message' => $errors,
-      ], 400);
-    }
+    $this->validate($request, User::$signinRules);
 
     $user = User::where('email', $request->input('email'))->first();
 
     if ($user) {
       if(Hash::check($request->input('password'), $user->password)) {
+
         $token = AuthHelpers::jwtEncode($user);
+
+        $user = UserHelper::getSignedInUserDetails($user);
+
+        
   
         return response()->json([
           'message' => 'Login successful',
+          'user' => $user,
           'token' => $token,
         ], 200);
       }

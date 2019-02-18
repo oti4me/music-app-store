@@ -19,11 +19,12 @@ class UsersControllerTest extends TestCase
     $this->staticUserDetails = $userMock->getStaticUserDetails();
 
     $this->incompleteUserDetails = $userMock->getincompleteUserDetails();
-    
+
     $this->getwrongEmailUserDetails = $userMock->getwrongEmailUserDetails();
   }
 
-  protected function clearDB() {
+  protected function clearDB()
+  {
     \Artisan::call('migrate:reset');
     \Artisan::call('migrate');
     // \Artisan::call('db:seed');
@@ -41,9 +42,10 @@ class UsersControllerTest extends TestCase
     $response = $this->post('/api/v1/auth/signup', $this->staticUserDetails);
 
     $response->assertStatus(201);
-    $response->assertJsonFragment([
-      'message' => 'User account create successfully',
-      ]);
+
+    $response = $response->json();
+
+    $this->assertEquals($response['user']['email'], $this->staticUserDetails['email']);
   }
 
   /**
@@ -71,15 +73,14 @@ class UsersControllerTest extends TestCase
   {
     $response = $this->post('/api/v1/auth/signup', []);
 
-    $response->assertStatus(400);
+    $response->assertStatus(422);
 
     $response->assertJsonFragment([
-      'message' => [
-        'A valid email is required!!',
-        'First Name is required and must me more than 2 characters',
-        'First Name is required and must me more than 2 characters',
-        'Password is required, and must be more than 3 characters'
-      ],
+      'email' => ["The email field is required."],
+      'firstName' => ["The first name field is required."],
+      'lastName' => ["The last name field is required."],
+      'password' => ["The password field is required."],
+      'genre' => ["The genre field is required."],
     ]);
   }
 
@@ -124,13 +125,11 @@ class UsersControllerTest extends TestCase
   {
     $response = $this->post('/api/v1/auth/signin', []);
 
-    $response->assertStatus(400);
+    $response->assertStatus(422);
 
     $response->assertJsonFragment([
-      'message' => [
-        'A valid email is required!!',
-        'Password is required, and must be more than 3 characters'
-      ]
+      'email' => ['The email field is required.'],
+      'password' => ["The password field is required."]
     ]);
   }
 }
