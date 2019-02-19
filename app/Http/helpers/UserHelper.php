@@ -22,7 +22,7 @@ class UserHelper
       'email'     => $userInput['email'],
       'password'  => Hash::make($userInput['password']),
       'phone'     => @$userInput['phone'],
-      'genre'     => ucfirst($userInput['genre']),
+      'genre'     => @ucfirst($userInput['genre']),
     ];
   }
 

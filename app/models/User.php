@@ -33,7 +33,6 @@ class User extends Authenticatable
     'lastName' => 'required|min:5|max:25',
     'email' => 'required|email',
     'password' => 'required|min:4|max:25',
-    'genre' => 'required'
   ];
 
   public static $signinRules = [
