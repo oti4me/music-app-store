@@ -36,11 +36,11 @@ class Song extends Model
         'url' => 'required',
     ];
 
-    /**
-     * Get the post that owns the comment.
-     */
-    public function user()
-    {
-        return $this->belongsTo('App\Model\User', 'user_id');
-    }
+    // /**
+    //  * Get the post that owns the comment.
+    //  */
+    // public function user()
+    // {
+    //     return $this->belongsTo('App\Model\User', 'user_id');
+    // }
 }
