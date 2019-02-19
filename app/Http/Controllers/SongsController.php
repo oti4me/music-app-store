@@ -66,7 +66,7 @@ class SongsController extends Controller
   {
     $url = '';
 
-    if(!$id || (int)$id < 1){
+    if (!$id || (int)$id < 1) {
       return response()->json([
         'message' => 'Invalid ID',
       ], 400);
@@ -76,7 +76,7 @@ class SongsController extends Controller
       ->where('user_id', $request->userId)
       ->first();
 
-    if($song) {
+    if ($song) {
       $url = $song->url;
     }
 
@@ -101,11 +101,11 @@ class SongsController extends Controller
    */
   public function getSongs(Request $request)
   {
-    $files = Song::all();
+    $songs = Song::all();
 
     return response()->json([
-      'message' => 'in coming files list',
-      'files' => $files,
+      'message' => 'in coming songs list',
+      'songs' => $songs,
     ], 200);
   }
 
@@ -120,8 +120,28 @@ class SongsController extends Controller
     $files = Song::where('user_id', $request->userId)->get();
 
     return response()->json([
-      'message' => 'in coming files list',
-      'files' => $files,
+      'message' => 'in coming songs list',
+      'songs' => $files,
+    ], 200);
+  }
+
+  /**
+   * get my uploaded file list
+   * 
+   * @param Request $request
+   * @return  $file
+   */
+  public function searchSongs(Request $request)
+  {
+    $searchTerm = $request->input('searchTerm');
+    
+    $songs = Song::where('title', 'ILIKE', '%' . $searchTerm . '%')
+      ->orWhere('genre', 'ILIKE', '%' . $searchTerm . '%')
+      ->get();
+
+    return response()->json([
+      'message' => 'in coming songs list',
+      'songs' => $songs,
     ], 200);
   }
 }

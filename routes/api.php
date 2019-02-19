@@ -29,10 +29,13 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('/me', 'SongsController@getMySongs');
         Route::get('/download', 'SongsController@downloadSong');
         Route::delete('/{id}', 'SongsController@deleteSong');
+        Route::post('/search', 'SongsController@searchSongs');
 
         Route::get('/favourites', 'FavouritesController@getFavourites');
         Route::post('/{id}/favourite', 'FavouritesController@addFavourite');
         Route::delete('/{id}/favourite', 'FavouritesController@removeFavourite');
+
+
     });
 });
 
