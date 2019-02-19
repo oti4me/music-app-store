@@ -26,12 +26,10 @@ class SongsController extends Controller
 
       $file = Song::create($fileDetails);
 
-      if ($file) {
-        return response()->json([
-          'message' => 'File uploaded',
-          'file' => $file
-        ], 201);
-      }
+      return response()->json([
+        'message' => 'File uploaded',
+        'file' => $file
+      ], 201);
     }
   }
 

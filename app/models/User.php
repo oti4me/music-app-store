@@ -49,11 +49,11 @@ class User extends Authenticatable
     'email_verified_at' => 'datetime',
   ];
 
-  /**
-   * Get the songs for a user.
-   */
-  public function songs()
-  {
-    return $this->hasMany('App\Models\Song', 'id');
-  }
+  // /**
+  //  * Get the songs for a user.
+  //  */
+  // public function songs()
+  // {
+  //   return $this->hasMany('App\Models\Song', 'id');
+  // }
 }
