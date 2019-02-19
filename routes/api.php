@@ -23,12 +23,12 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('/signup', 'UsersController@userSignup');
         Route::post('/signin', 'UsersController@userSignin');
     });
-    Route::group(['prefix' => 'files', 'middleware' => 'token'], function () {
-        Route::post('/', 'FilesController@uploadFile');
-        Route::get('/', 'FilesController@getFiles');
-        Route::get('/myfiles', 'FilesController@getMyFiles');
-        Route::get('/download', 'FilesController@downloadFile');
-        Route::delete('/', 'FilesController@deleteFile');
+    Route::group(['prefix' => 'songs', 'middleware' => 'token'], function () {
+        Route::post('/', 'SongsController@uploadSong');
+        Route::get('/', 'SongsController@getSongs');
+        Route::get('/me', 'SongsController@getMySongs');
+        Route::get('/download', 'SongsController@downloadSong');
+        Route::delete('/{id}', 'SongsController@deleteSong');
     });
 });
 

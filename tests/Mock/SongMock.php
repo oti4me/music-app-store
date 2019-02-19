@@ -7,9 +7,9 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 use Faker\Factory as Faker;
 use App\helpers\AuthHelpers;
-use App\Models\File;
+use App\Models\Song;
 
-class FileMock
+class SongMock
 {
   public function __construct()
   {
@@ -29,14 +29,16 @@ class FileMock
    *
    * @return {array} user
    */
-  public function fileDetails()
+  public function songDetails()
   {
     Storage::fake('avatars');
 
     $file = UploadedFile::fake()->image('avatar.jpg');
 
     return [
-      "name" => $this->faker->name,
+      "title" => $this->faker->name,
+      "genre" => 'Rap',
+      "artist" => 'James bunt',
       "file" => $file,
     ];
   }
@@ -46,10 +48,10 @@ class FileMock
    *
    * @return {array} user
    */
-  public function invalidFileDetails()
+  public function invalidSongDetails()
   {
     return [
-      "name" => 'Test File',
+      "title" => 'Test File',
       "file" => 'invalid file format',
     ];
   }
@@ -59,7 +61,7 @@ class FileMock
    *
    * @return {array} user
    */
-  public function deleteFileDetails()
+  public function deleteSongDetails()
   {
     return [
       'url' => 'linktofile',
@@ -71,7 +73,7 @@ class FileMock
    *
    * @return {array} user
    */
-  public function deleteFileNotFoundDetails()
+  public function deleteSongNotFoundDetails()
   {
     return [
       'url' => 'linktofile',
@@ -83,9 +85,9 @@ class FileMock
    *
    * @return {array} user
    */
-  public static function getFilesFromDB()
+  public static function getSongsFromDB()
   {
-    return File::all();
+    return Song::all();
   }
 
 }

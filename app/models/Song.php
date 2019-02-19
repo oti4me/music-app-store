@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class File extends Model
+class Song extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -12,7 +12,7 @@ class File extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'user_id', 'url'
+        'title', 'user_id', 'url', 'genre', 'artist'
     ];
 
     /**
@@ -21,8 +21,10 @@ class File extends Model
      * @var array
      */
     public static $uploadRules = [
-        'name' => 'required|min:5||max:25',
-        'file' => 'required|file|max:5120'
+        'title' => 'required|min:5|max:25',
+        'file' => 'required|file|max:5120',
+        'genre' => 'required|min:2|max:25',
+        'artist' => 'required|min:2|max:25',
     ];
 
     /**

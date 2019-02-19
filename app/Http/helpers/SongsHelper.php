@@ -4,9 +4,9 @@ namespace App\helpers;
 
 use Exception;
 use Illuminate\Support\Facades\Storage;
-use App\Models\File;
+use App\Models\Song;
 
-class FileHelper
+class SongsHelper
 {
   /**
    * Upload a file to remote server
@@ -14,18 +14,26 @@ class FileHelper
    * @param {object} $file
    * @return object
    */
-  public static function uploadFile($file)
+  public static function uploadSong($file)
   {
     try{
-      return Storage::put('files', $file);
+      return Storage::put('public/songs', $file);
 
     } catch(\Exception $e) {
       return false;
     }
   }
 
-  public static function getFile() {
-    return File::all()[0];
+  public static function getFormatedSongDetails($songDetails) {
+    return [
+      'title' => $songDetails['title'],
+      'genre' => $songDetails['genre'],
+      'artist' => $songDetails['artist'],
+    ];
+  }
+
+  public static function getSong() {
+    return Song::all()[0];
   }
 
   /**
@@ -34,7 +42,7 @@ class FileHelper
    * @param {object} $file
    * @return object
    */
-  public static function downloadFile($url)
+  public static function downloadSong($url)
   {
     try {
       return Storage::download($url);
@@ -50,7 +58,7 @@ class FileHelper
    * @param {object} $file
    * @return object
    */
-  public static function deleteFile($url)
+  public static function deleteSong($url)
   {
     try {
       return Storage::delete($url);

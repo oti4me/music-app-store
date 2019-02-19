@@ -25,9 +25,8 @@ class UsersControllerTest extends TestCase
 
   protected function clearDB()
   {
-    \Artisan::call('migrate:reset');
+    \Artisan::call('migrate:fresh');
     \Artisan::call('migrate');
-    // \Artisan::call('db:seed');
   }
 
   /**
