@@ -94,7 +94,7 @@ class SongsControllerTest extends TestCase
     $response->assertStatus(200);
 
     $response->assertJsonFragment([
-      'message' => 'in coming files list',
+      'message' => 'in coming songs list',
     ]);
   }
 
@@ -120,7 +120,25 @@ class SongsControllerTest extends TestCase
     $response->assertStatus(200);
 
     $response->assertJsonFragment([
-      'message' => 'in coming files list',
+      'message' => 'in coming songs list',
+    ]);
+  }
+
+  /**
+   * Test search songs.
+   *
+   * @return void
+   */
+  public function testSearchSong()
+  {
+    $searchTerm = 'blues';
+
+    $response = $this->post('/api/v1/songs/search', [ 'searchTerm' => $searchTerm ], $this->header);
+
+    $response->assertStatus(200);
+
+    $response->assertJsonFragment([
+      'message' => 'in coming songs list',
     ]);
   }
 
