@@ -33,7 +33,6 @@ class User extends Authenticatable
     'lastName' => 'required|min:5|max:25',
     'email' => 'required|email',
     'password' => 'required|min:4|max:25',
-    'genre' => 'required'
   ];
 
   public static $signinRules = [
@@ -49,4 +48,12 @@ class User extends Authenticatable
   protected $casts = [
     'email_verified_at' => 'datetime',
   ];
+
+  /**
+   * Get the songs for a user.
+   */
+  public function songs()
+  {
+    return $this->hasMany('App\Models\Song', 'id');
+  }
 }

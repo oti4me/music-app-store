@@ -35,4 +35,12 @@ class Song extends Model
     public static $urlRules = [
         'url' => 'required',
     ];
+
+    /**
+     * Get the post that owns the comment.
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\Model\User', 'user_id');
+    }
 }

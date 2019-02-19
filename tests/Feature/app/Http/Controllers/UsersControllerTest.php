@@ -79,7 +79,6 @@ class UsersControllerTest extends TestCase
       'firstName' => ["The first name field is required."],
       'lastName' => ["The last name field is required."],
       'password' => ["The password field is required."],
-      'genre' => ["The genre field is required."],
     ]);
   }
 

@@ -64,8 +64,6 @@ class UsersController extends Controller
 
         $user = UserHelper::getSignedInUserDetails($user);
 
-        
-  
         return response()->json([
           'message' => 'Login successful',
           'user' => $user,
