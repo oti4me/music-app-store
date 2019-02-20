@@ -35,7 +35,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('/{id}/favourite', 'FavouritesController@addFavourite');
         Route::delete('/{id}/favourite', 'FavouritesController@removeFavourite');
 
-
+        Route::post('/playlist', 'PlaylistController@createplaylist');
     });
 });
 
