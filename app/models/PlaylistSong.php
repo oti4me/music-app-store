@@ -22,7 +22,7 @@ class PlaylistSong extends Model
      */
     public function song()
     {
-        return $this->belongsToMany('App\Models\Song');
+        return $this->belongsTo('App\Models\Song');
     }
 
     /**

@@ -31,4 +31,12 @@ class Playlist extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
+
+    /**
+     * Get the user that owns the phone.
+     */
+    public function playlistSongs()
+    {
+        return $this->hasMany( 'App\Models\playlistSong');
+    }
 }

@@ -37,6 +37,7 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::post('/playlists', 'PlaylistController@createplaylist');
         Route::post('/{id}/playlists/{playlistId}', 'PlaylistController@addSong');
+        Route::get('/playlists/{playlistId}', 'PlaylistController@viewPlaylist');
     });
 });
 
