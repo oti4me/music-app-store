@@ -83,8 +83,8 @@
 *  If the tests are successful, they will complete without failures or errors.
 
 ## Technologies
- * [PHP 7.1](www.php.net/): This is the newest version of JavsScript with new features such as arrow functions, spread and rest operators and many more.
- * [Laravel](https://laravel.com/): REACT is a JavaScript framework developed by Facebook and it is used for developing web application. REACT is the 'VIEW' in the MVC architecture.
+ * [PHP 7.1](www.php.net/): PHP 7.1.0 comes with numerous improvements and new features such as: Nullable types, Void return type, Iterable pseudo-type, Class constant visiblity modifiers, Square bracket syntax for list() and the ability to specify keys in list(), Catching multiple exceptions types, Many more features and changes.
+ * [Laravel](https://laravel.com/): The PHP Framework For Web Artisans.
 
 # Language
 - PHP
