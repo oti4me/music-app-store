@@ -14,10 +14,10 @@ class SongsHelper
    * @param {object} $file
    * @return object
    */
-  public static function uploadSong($file)
+  public static function uploadSong($file, $name)
   {
     try{
-      return Storage::put('public/songs', $file);
+      return Storage::putFileAs('public/songs', $file, $name);
 
     } catch(\Exception $e) {
       return false;

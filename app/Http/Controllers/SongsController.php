@@ -18,9 +18,29 @@ class SongsController extends Controller
   {
     $this->validate($request, Song::$uploadRules);
 
+    $ext = $request->file('file')->getClientOriginalExtension();
+
+    if($ext !== 'mp3') {
+      return response()->json([
+        'message' => 'File must be an mp3 file',
+      ], 422);
+    }
+
+    $songExist = Song::where('title', $request->input('title'))
+        ->where('user_id', $request->userId)->first();
+
+    if($songExist) {
+      return response()->json([
+        'message' => 'You already have a song with this title',
+      ], 409);
+    }
+
     $fileDetails = SongsHelper::getFormatedSongDetails($request->input());
 
-    if ($fileUrl = SongsHelper::uploadSong($request->file('file'))) {
+    $name = str_replace(' ', '_', $fileDetails['title']);
+    $name .= '.' . $ext;
+
+    if ($fileUrl = SongsHelper::uploadSong($request->file('file'), $name)) {
       $fileDetails['user_id'] = $request->userId;
       $fileDetails['url'] = $fileUrl;
 
@@ -45,10 +65,11 @@ class SongsController extends Controller
 
     if ($response = SongsHelper::downloadSong($request->input('url'))) {
 
-      return response()->json([
-        'message' => 'File Downloaded',
-        'File' => $response,
-      ], 200);
+      return $response;
+      // return response()->json([
+      //   'message' => 'File Downloaded',
+      //   'File' => $response,
+      // ], 200);
     }
 
     return response()->json([
@@ -137,6 +158,7 @@ class SongsController extends Controller
     
     $songs = Song::where('title', 'ILIKE', '%' . $searchTerm . '%')
       ->orWhere('genre', 'ILIKE', '%' . $searchTerm . '%')
+      ->orWhere('artist', 'ILIKE', '%' . $searchTerm . '%')
       ->get();
 
     return response()->json([

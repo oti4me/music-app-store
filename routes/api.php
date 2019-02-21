@@ -15,7 +15,7 @@ use GuzzleHttp\Middleware;
 */
 
 Route::get('/', function (Request $request) {
-    return "Welcome to the music app api endpoint";
+    return "Welcome to the music app api endpoint visit /doc for api documentation";
 });
 
 Route::group(['prefix' => 'v1'], function () {
@@ -35,10 +35,11 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('/{id}/favourite', 'FavouritesController@addFavourite');
         Route::delete('/{id}/favourite', 'FavouritesController@removeFavourite');
 
-        Route::post('/playlist', 'PlaylistController@createplaylist');
+        Route::post('/playlists', 'PlaylistController@createplaylist');
+        Route::post('/{id}/playlists/{playlistId}', 'PlaylistController@addSong');
     });
 });
 
-Route::fallback(function () {
-    return response()->json(['message' => 'Not Found.'], 404);
+Route::fallback(function(){
+    return response()->json(['message' => 'Resource not Found!!'], 404);
 });

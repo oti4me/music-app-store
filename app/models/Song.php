@@ -37,6 +37,14 @@ class Song extends Model
     ];
 
     // /**
+    //  * Get the user that owns the phone.
+    //  */
+    // public function Playlist()
+    // {
+    //     return $this->belongsToMany('App\Models\Playlist');
+    // }
+
+    // /**
     //  * Get the post that owns the comment.
     //  */
     // public function user()
