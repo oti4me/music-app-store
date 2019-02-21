@@ -36,8 +36,31 @@
   * In other to interact effectively with endpoints, install and use [Postman](https://www.getpostman.com/)
 
 * Run the app
+  *  `php artisan migrate`
   *  `php artisan serve`
   *  Running the command above will run the app at `localhost:8000`.
+  
+* API Endpoints
+    User endpoints: user can signup as an artist by passing the type field = 'artist'
+    *  `POST:/auth/signup`
+    *  `POST:/auth/signup`
+    
+    Song endpoints:
+    *  `POST:/songs` Add songs
+    *  `GET:/songs` Get the list of songs
+    *  `GET:/songs/download?url=xxx` Donwload song
+    *  `GET:/songs/me` Get a list of my songs
+    *  `DELETE:/songs/{id}` Delete a song - can only delete own song
+    
+    Favourites Endpoints
+    *  `POST:/songs/{id}/favourites` Add song to favorites
+    *  `GET:/songs/favourites` Get my favorite songs
+    *  `DELETE:/songs/{id}/favourites` Remove song from favorite
+    
+    Playlist Endpoints
+    *  `POST:/songs/playlists` Create a playlist
+    *  `DELETE:/songs/{id}/playlists/{playlist_id}` Add song song to playlist
+    *  `DELETE:/songs/playlists/{playlist_id}` View playlist
 
 ## Dependencies
 * See composer.json for reference
