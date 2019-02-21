@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use App\helpers\AuthHelpers;
+use App\Models\User;
 
 class APIAuthMiddleware
 {
@@ -19,7 +20,9 @@ class APIAuthMiddleware
     $request->headers->set('Accept', 'application/json');
     $token = $request->header("Authorization");
 
-    if (!$data = AuthHelpers::jwtDecode($token)) {
+    $data = AuthHelpers::jwtDecode($token);
+
+    if (!$data || !User::find($data->sub)) {
       return response()->json(['message' => 'Unauthenticated'], 401);
     }
 
