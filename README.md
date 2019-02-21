@@ -12,6 +12,13 @@
 * Donwload files
 * Delete files
 * Authenticate users
+* Create playlist
+* Add sings to playlist
+* Artist can create albums
+* Add songs to albums
+* Add songs to favorites
+* View favorite list
+* View playlist
 
 
 ## Installation and Setup
@@ -61,7 +68,10 @@
     *  `POST:/songs/playlists` Create a playlist
     *  `DELETE:/songs/{id}/playlists/{playlist_id}` Add song song to playlist
     *  `DELETE:/songs/playlists/{playlist_id}` View playlist
-
+    
+    Album Endpoints
+    *  `POST:/songs/albums` Creates an album
+    
 ## Dependencies
 * See composer.json for reference
 
