@@ -40,7 +40,7 @@
   *  `php artisan serve`
   *  Running the command above will run the app at `localhost:8000`.
   
-* API Endpoints
+  #### API Endpoints
     User endpoints: user can signup as an artist by passing the type field = 'artist'
     *  `POST:/auth/signup`
     *  `POST:/auth/signup`
