@@ -31,7 +31,7 @@ class PlaylistControllerTest extends TestCase
    */
   public function testCreatePlaylistSuccess()
   {
-    $response = $this->post('/api/v1/songs/playlist', [
+    $response = $this->post('/api/v1/songs/playlists', [
       'name' => 'Test Playlist',
     ], $this->header);
 
@@ -49,7 +49,7 @@ class PlaylistControllerTest extends TestCase
    */
   public function testCreatePlaylistValidationError()
   {
-    $response = $this->post('/api/v1/songs/playlist', [
+    $response = $this->post('/api/v1/songs/playlists', [
       'name' => '',
     ], $this->header);
 
@@ -75,7 +75,7 @@ class PlaylistControllerTest extends TestCase
       'Authorization' => $token
     ];
     
-    $response = $this->post('/api/v1/songs/playlist', [
+    $response = $this->post('/api/v1/songs/playlists', [
       'name' => 'Test Playlist',
     ], $header);
 
@@ -85,5 +85,33 @@ class PlaylistControllerTest extends TestCase
       'message' => 'You have already created a playlist with this title',
     ]);
   }
+
+  /**
+   * Test File Uplaod Success.
+   *
+   * @return void
+   */
+  // public function testAddSongsToPlaylistSuccess()
+  // {
+  //   $playlist = Playlist::find(1);
+
+  //   $token = AuthHelpers::jwtEncode($playlist->user);
+
+  //   $header = [
+  //     'Authorization' => $token
+  //   ];
+
+  //   $response = $this->post('/api/v1/songs/1/playlists/1', [
+  //     'name' => 'Test Playlist',
+  //   ], $header);
+
+  //   dd( $response->json());
+
+  //   $response->assertStatus(201);
+
+  //   $response->assertJsonFragment([
+  //     'message' => 'Song added to playlist',
+  //   ]);
+  // }
 
 }

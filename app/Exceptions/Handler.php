@@ -48,10 +48,11 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        if(in_array('token', $request->route()->middleware())) {
-            $request->headers->set('Accept', 'application/json');
-        }
-        return parent::render($request, $exception);
+			if($exception instanceof \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException){
+				return response()->json([ 'message' => 'Resource not found'], 404);
+			}
+
+      return parent::render($request, $exception);
     }
 
     /**

@@ -33,7 +33,7 @@ class SongMock
   {
     Storage::fake('avatars');
 
-    $file = UploadedFile::fake()->image('avatar.jpg');
+    $file = UploadedFile::fake()->image('music.mp3');
 
     return [
       "title" => $this->faker->name,
