@@ -15,6 +15,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/docs', function () {
+    return "Coming Soon";
+});
+
 Route::fallback(function(){
     return response()->json([ 'message' => 'Resource not Found!!'], 404);
 });
