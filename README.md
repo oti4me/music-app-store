@@ -71,7 +71,8 @@
     
     Album Endpoints
     *  `POST:/songs/albums` Creates an album
-    
+    *  `POST:/songs/{id}/albums/{albumId}` Creates an album
+        
 ## Dependencies
 * See composer.json for reference
 
