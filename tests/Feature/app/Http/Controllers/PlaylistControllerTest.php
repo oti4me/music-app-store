@@ -24,6 +24,12 @@ class PlaylistControllerTest extends TestCase
     $this->songDetails = $songMock->songDetails();
   }
 
+  protected function clearDB()
+  {
+    \Artisan::call('migrate:fresh');
+    \Artisan::call('migrate');
+  }
+
   /**
    * Test File Uplaod Success.
    *
@@ -91,27 +97,121 @@ class PlaylistControllerTest extends TestCase
    *
    * @return void
    */
-  // public function testAddSongsToPlaylistSuccess()
-  // {
-  //   $playlist = Playlist::find(1);
+  public function testAddSongsToPlaylistSuccess()
+  {
+    $playlist = Playlist::find(1);
 
-  //   $token = AuthHelpers::jwtEncode($playlist->user);
+    $token = AuthHelpers::jwtEncode($playlist->user);
 
-  //   $header = [
-  //     'Authorization' => $token
-  //   ];
+    $header = [
+      'Authorization' => $token
+    ];
 
-  //   $response = $this->post('/api/v1/songs/1/playlists/1', [
-  //     'name' => 'Test Playlist',
-  //   ], $header);
+    $response = $this->post('/api/v1/songs/1/playlists/1', [
+      'name' => 'Test Playlist',
+    ], $header);
 
-  //   dd( $response->json());
+    $response->assertStatus(201);
 
-  //   $response->assertStatus(201);
+    $response->assertJsonFragment([
+      'message' => 'Song added to playlist',
+    ]);
+  }
 
-  //   $response->assertJsonFragment([
-  //     'message' => 'Song added to playlist',
-  //   ]);
-  // }
+
+  /**
+   * Test File Uplaod Success.
+   *
+   * @return void
+   */
+  public function testAddSongsToPlaylistDuplicateError()
+  {
+    $playlist = Playlist::find(1);
+
+    $token = AuthHelpers::jwtEncode($playlist->user);
+
+    $header = [
+      'Authorization' => $token
+    ];
+
+    $response = $this->post('/api/v1/songs/1/playlists/1', [
+      'name' => 'Test Playlist',
+    ], $header);
+
+    $response->assertStatus(409);
+
+    $response->assertJsonFragment([
+      'message' => 'Song already in playlist',
+    ]);
+  }
+
+
+  /**
+   * Test File Uplaod Success.
+   *
+   * @return void
+   */
+  public function testViewPlaylistSuccess()
+  {
+    $playlist = Playlist::find(1);
+
+    $token = AuthHelpers::jwtEncode($playlist->user);
+
+    $header = [
+      'Authorization' => $token
+    ];
+
+    $response = $this->get('/api/v1/songs/playlists/' . $playlist->id, $header);
+
+    $response->assertStatus(200);
+  }
+
+  /**
+   * Test File Uplaod Success.
+   *
+   * @return void
+   */
+  public function testViewPlaylistValidatioError()
+  {
+    $playlist = Playlist::find(1);
+
+    $token = AuthHelpers::jwtEncode($playlist->user);
+
+    $header = [
+      'Authorization' => $token
+    ];
+
+    $response = $this->get('/api/v1/songs/playlists/dsfsfsd', $header);
+
+    $response->assertStatus(400);
+
+    $response->assertJsonFragment([
+      'message' => 'Invalid ID',
+    ]);
+  }
+
+  /**
+   * Test File Uplaod Success.
+   *
+   * @return void
+   */
+  public function testViewPlaylistNotFoundError()
+  {
+    $playlist = Playlist::find(1);
+
+    $token = AuthHelpers::jwtEncode($playlist->user);
+
+    $header = [
+      'Authorization' => $token
+    ];
+
+    $response = $this->get('/api/v1/songs/playlists/500', $header);
+
+    $response->assertStatus(404);
+
+    $response->assertJsonFragment([
+      'message' => 'Playlist not found',
+    ]);
+  }
 
 }

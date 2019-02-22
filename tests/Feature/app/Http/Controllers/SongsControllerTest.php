@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Artisan;
 use App\Helpers\AuthHelpers;
 use App\Helpers\UserHelper;
 use App\Helpers\SongsHelper;
+use App\Models\Song;
+use App\Models\User;
+use Illuminate\Http\UploadedFile;
 
 class SongsControllerTest extends TestCase
 {
@@ -59,6 +62,49 @@ class SongsControllerTest extends TestCase
 
     $response->assertJsonFragment([
       'file' => ['The file must be a file.'],
+    ]);
+  }
+
+  public function testSongUploadFileTypeValidationError()
+  {
+    $songDetails = [
+      'title' =>'Whatever you want',
+      'genre' => 'Rock',
+      'artist' => 'Guns and Roses',
+      'file' => UploadedFile::fake()->image('music.jpg')
+    ];
+
+    $response = $this->post('/api/v1/songs', $songDetails, $this->header);
+
+    $response->assertStatus(422);
+
+    $response->assertJsonFragment([
+      'message' => 'File must be an mp3 file',
+    ]);
+  }
+
+  public function testSongUploadDuplicateError()
+  {
+    $song = Song::find(1);
+
+    $user = User::find($song->user_id);
+    $token = AuthHelpers::jwtEncode($user);
+
+    $songDetails = [
+      'title' => $song->title,
+      'genre' => 'Rock',
+      'artist' => 'Guns and Roses',
+      'file' => UploadedFile::fake()->image('music.mp3')
+    ];
+
+    $response = $this->post('/api/v1/songs', $songDetails, [
+      'Authorization' => $token
+    ]);
+
+    $response->assertStatus(409);
+
+    $response->assertJsonFragment([
+      'message' => 'You already have a song with this title',
     ]);
   }
 

@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
-use Tests\Mock\FileMock;
+use Tests\Mock\SongMock;
 use App\Models\User;
 
 /*
@@ -16,15 +16,17 @@ use App\Models\User;
 |
 */
 
-$factory->define(App\Models\File::class, function (Faker $faker) {
-    $fileMock = new FileMock();
-    $file = $fileMock->fileDetails();
+$factory->define(App\Models\Song::class, function (Faker $faker) {
+    $songMock = new SongMock();
+    $song = $songMock->songDetails();
 
     $usersId = User::all()->pluck('id')->toArray();
 
     return [
-        'name'      => $file['name'],
-        'url'       => $file['file'],
+        'title'      => $song['title'],
+        'url'       => $song['file'],
+        'genre'       => $song[ 'genre'],
+        'artist'       => $song[ 'artist'],
         'user_id'   => array_rand($usersId),
     ];
 });

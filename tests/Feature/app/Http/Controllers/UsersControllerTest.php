@@ -7,6 +7,8 @@ use Tests\TestCase;
 use Tests\Mock\UserMock;
 use Illuminate\Support\Facades\Artisan;
 
+use Illuminate\Http\UploadedFile;
+
 class UsersControllerTest extends TestCase
 {
 
@@ -128,6 +130,22 @@ class UsersControllerTest extends TestCase
     $response->assertJsonFragment([
       'email' => ['The email field is required.'],
       'password' => ["The password field is required."]
+    ]);
+  }
+
+  /**
+   * Test User Signin validation Error.
+   *
+   * @return void
+   */
+  public function testMethodNotAllowd()
+  {
+    $response = $this->post('/api/v1/auth/notAllowsURI', []);
+
+    $response->assertStatus(404);
+
+    $response->assertJsonFragment([
+      'message' => 'Resource not found',
     ]);
   }
 }
