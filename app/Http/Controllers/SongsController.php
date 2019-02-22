@@ -40,17 +40,17 @@ class SongsController extends Controller
     $name = str_replace(' ', '_', $fileDetails['title']);
     $name .= '.' . $ext;
 
-    if ($fileUrl = SongsHelper::uploadSong($request->file('file'), $name)) {
-      $fileDetails['user_id'] = $request->userId;
-      $fileDetails['url'] = $fileUrl;
+    $fileUrl = SongsHelper::uploadSong($request->file('file'), $name);
+      
+    $fileDetails['user_id'] = $request->userId;
+    $fileDetails['url'] = $fileUrl;
 
-      $file = Song::create($fileDetails);
+    $file = Song::create($fileDetails);
 
-      return response()->json([
-        'message' => 'File uploaded',
-        'file' => $file
-      ], 201);
-    }
+    return response()->json([
+      'message' => 'File uploaded',
+      'file' => $file
+    ], 201);
   }
 
   /**

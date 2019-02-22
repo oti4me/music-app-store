@@ -21,11 +21,11 @@ class AlbumsController extends Controller
 
     $user = User::find($request->userId);
 
-    if (!$user ||  $user->type == null) {
-      return response()->json([
-        'message' => 'You are not an artist'
-      ], 403);
-    }
+    // if (!$user ||  $user->type == null) {
+    //   return response()->json([
+    //     'message' => 'You are not an artist'
+    //   ], 403);
+    // }
 
     if (Album::where('title', $request->input('title'))->where('user_id', $request->userId)->first()) {
       return response()->json([
