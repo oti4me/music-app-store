@@ -52,8 +52,8 @@ class User extends Authenticatable
   /**
    * Get the songs for a user.
    */
-  public function playlists()
-  {
-    return $this->hasMany('App\Models\Playlist');
-  }
+  // public function playlists()
+  // {
+  //   return $this->hasMany('App\Models\Playlist');
+  // }
 }

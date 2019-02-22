@@ -32,13 +32,11 @@ class CorsMiddleware
         return $response;
     }
 
-    if($response instanceof $SymfonyResopnse) {
+    // if($response instanceof $SymfonyResopnse) {
         foreach ($headers as $key => $value) {
             $response->headers->set($key, $value);
         }
         return $response;
-    }
-
-    return $response;
+    // }
   }
 }

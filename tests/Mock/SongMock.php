@@ -38,7 +38,7 @@ class SongMock
     return [
       "title" => $this->faker->name,
       "genre" => 'Rap',
-      "artist" => 'James bunt',
+      "artist" => $this->faker->firstName,
       "file" => $file,
     ];
   }

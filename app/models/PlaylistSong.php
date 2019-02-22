@@ -20,16 +20,16 @@ class PlaylistSong extends Model
     /**
      * Get the user that owns the phone.
      */
-    public function song()
-    {
-        return $this->belongsTo('App\Models\Song');
-    }
+    // public function song()
+    // {
+    //     return $this->belongsTo('App\Models\Song');
+    // }
 
     /**
      * Get the user that owns the phone.
      */
-    public function Playlist()
-    {
-        return $this->belongsTo('App\Models\Playlist');
-    }
+    // public function Playlist()
+    // {
+    //     return $this->belongsTo('App\Models\Playlist');
+    // }
 }
